@@ -17,8 +17,8 @@ export class GradesController {
 
     @Post()
     @Roles(1)
-    async createGrade(@Body() body: { studentId: number; subjectId: number; grade: number }, @Request() req) {
-        return this.gradesService.createGrade(body.studentId, body.subjectId, body.grade, req.user.userId, req.user.roleId);
+    async createGrade(@Body() body: { studentId: number; subjectId: number; grade: number }) {
+        return this.gradesService.createGrade(body.studentId, body.subjectId, body.grade);
     }
 
     @Get()
@@ -29,13 +29,13 @@ export class GradesController {
 
     @Put(':id')
     @Roles(1, 2)
-    async updateGrade(@Param('id') id: string, @Body('grade') grade: number, @Request() req) {
-        return this.gradesService.updateGrade(+id, grade, req.user.userId, req.user.roleId);
+    async updateGrade(@Param('id') id: string, @Body('grade') grade: number) {
+        return this.gradesService.updateGrade(+id, grade);
     }
 
     @Delete(':id')
     @Roles(1, 2)
-    async deleteGrade(@Param('id') id: string, @Request() req) {
-        return this.gradesService.deleteGrade(+id, req.user.userId, req.user.roleId);
+    async deleteGrade(@Param('id') id: string) {
+        return this.gradesService.deleteGrade(+id);
     }
 }

@@ -10,17 +10,13 @@ export class GradesService {
         private gradesRepository: Repository<Grade>,
     ) { }
 
-    async createGrade(studentId: number, subjectId: number, gradeValue: number, userId: number, roleId: number) {
+    async createGrade(studentId: number, subjectId: number, gradeValue: number) {
         const grade = this.gradesRepository.create({
             student_id: studentId,
             subject_id: subjectId,
             grade: gradeValue,
         });
-        const saved = await this.gradesRepository.save(grade);
-        return this.gradesRepository.findOne({
-            where: { id: saved.id },
-            relations: { student: { user: true }, subject: true },
-        });
+        return this.gradesRepository.save(grade);
     }
 
     async getGradesByStudent(studentId: number) {
@@ -32,24 +28,23 @@ export class GradesService {
 
     async getAllGrades() {
         return this.gradesRepository.find({
-            relations: { student: { user: true }, subject: true },
+            relations: {
+                student: { user: true },
+                subject: true,
+            },
         });
     }
 
-    async updateGrade(id: number, grade: number, userId: number, roleId: number) {
+    async updateGrade(id: number, grade: number) {
         const gradeEntity = await this.gradesRepository.findOne({ where: { id } });
         if (!gradeEntity) {
             throw new NotFoundException(`Grade with id ${id} not found`);
         }
         gradeEntity.grade = grade;
-        await this.gradesRepository.save(gradeEntity);
-        return this.gradesRepository.findOne({
-            where: { id },
-            relations: { student: { user: true }, subject: true },
-        });
+        return this.gradesRepository.save(gradeEntity);
     }
 
-    async deleteGrade(id: number, userId: number, roleId: number) {
+    async deleteGrade(id: number) {
         const gradeEntity = await this.gradesRepository.findOne({ where: { id } });
         if (!gradeEntity) {
             throw new NotFoundException(`Grade with id ${id} not found`);
