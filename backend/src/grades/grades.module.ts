@@ -5,9 +5,9 @@ import { GradesService } from './grades.service';
 import { Grade } from '../entities/grade.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Grade])],
-  controllers: [GradesController],
-  providers: [GradesService],
-  exports: [GradesService],
+    imports: [TypeOrmModule.forFeature([Grade])],
+    controllers: [GradesController],
+    providers: [GradesService],
+    exports: [GradesService],
 })
-export class GradesModule {}
+export class GradesModule { }
